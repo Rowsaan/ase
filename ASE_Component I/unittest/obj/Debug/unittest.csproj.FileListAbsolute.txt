@@ -1,0 +1,16 @@
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\unittest.dll
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\unittest.pdb
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\ASE_Component I.exe
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\ASE_Component I.pdb
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\ASE_Component I.exe.config
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\obj\Debug\unittest.csprojAssemblyReference.cache
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\obj\Debug\unittest.csproj.CopyComplete
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\obj\Debug\unittest.dll
+C:\Users\Roshan\source\repos\ASE_Component I\unittest\obj\Debug\unittest.pdb

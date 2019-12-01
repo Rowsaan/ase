@@ -1,0 +1,13 @@
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\bin\Debug\mdi_form.exe.config
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\bin\Debug\mdi_form.exe
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\bin\Debug\mdi_form.pdb
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.csprojAssemblyReference.cache
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.Form1.resources
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.Properties.Resources.resources
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.csproj.GenerateResource.cache
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.exe
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.pdb
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.Form2.resources
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.Form3.resources
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.Form4.resources
+C:\Users\Roshan\source\repos\mdi_form\mdi_form\obj\Debug\mdi_form.Form5.resources

@@ -1,0 +1,6 @@
+C:\Users\Roshan\source\repos\practise\practise\bin\Debug\practise.exe.config
+C:\Users\Roshan\source\repos\practise\practise\bin\Debug\practise.exe
+C:\Users\Roshan\source\repos\practise\practise\bin\Debug\practise.pdb
+C:\Users\Roshan\source\repos\practise\practise\obj\Debug\practise.csprojAssemblyReference.cache
+C:\Users\Roshan\source\repos\practise\practise\obj\Debug\practise.exe
+C:\Users\Roshan\source\repos\practise\practise\obj\Debug\practise.pdb
