@@ -14,7 +14,7 @@ namespace ASE_Component_I
 {
     /// <summary>
     /// Form1 contains all the components like buttons
-    /// panel text field and all
+    /// panel text field and all 
     /// </summary>
     public partial class Form1 : Form
     {
@@ -24,7 +24,7 @@ namespace ASE_Component_I
         string[] shapes = {"drawto", "moveto", "rectangle", "circle","triangle"};
         public bool draw = false;
         public bool load = false;
-        public bool save = true;
+        public bool save = false;
         public bool execute = false;
         public bool clear_bool = false;
         public bool reset_bool = false;
@@ -262,7 +262,9 @@ namespace ASE_Component_I
             clear_bool = false;
             panel1.Refresh();
             textBox2.Clear();
+            textBox1.Clear();
             clear_bool = true;
+
         }
         /// <summary>
         /// this button reset the point of reference or origin to (0,0)
@@ -338,6 +340,7 @@ namespace ASE_Component_I
         private void button3_Click(object sender, EventArgs e)
         {
             clear();
+            
             
         }
 
@@ -420,6 +423,11 @@ namespace ASE_Component_I
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Commands:\nmoveto(a,b): To move the point of origin\ndrawto(a,b): Draw a line to given poinnt\ncircle(radius):Draw a circle\nrectangle(width,height):Draw a rectangle\ntriangle(bas,perpendicular):Draw atriangle\n ", "Help");
         }
     }
 }

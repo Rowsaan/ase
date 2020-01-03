@@ -54,7 +54,7 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Location = new System.Drawing.Point(0, 28);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1015, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(986, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -67,7 +67,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(1015, 28);
+            this.menuStrip2.Size = new System.Drawing.Size(986, 28);
             this.menuStrip2.TabIndex = 1;
             this.menuStrip2.Text = "menuStrip2";
             // 
@@ -128,6 +128,7 @@
             this.helpToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -142,6 +143,7 @@
             // 
             this.textBox1.BackColor = System.Drawing.SystemColors.Info;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.textBox1.ForeColor = System.Drawing.Color.Red;
             this.textBox1.Location = new System.Drawing.Point(12, 434);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -240,7 +242,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1015, 584);
+            this.ClientSize = new System.Drawing.Size(986, 584);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);

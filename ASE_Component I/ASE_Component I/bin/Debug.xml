@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ASE_Component I</name>
+    </assembly>
+    <members>
+        <member name="T:ASE_Component_I.Circle">
+            <summary>
+            class to draw circle
+            </summary>
+        </member>
+        <member name="M:ASE_Component_I.Circle.saved_values(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="a">origin x- coordinate</param>
+            <param name="b">origin y- coordinate</param>
+            <param name="c">radius of circle</param>
+        </member>
+        <member name="T:ASE_Component_I.Form1">
+            <summary>
+            Form1 contains all the components like buttons
+            panel text field and all 
+            </summary>
+        </member>
+        <member name="M:ASE_Component_I.Form1.pentomove(System.Int32,System.Int32)">
+            <summary>
+            this methods takes two parameters x and y which when given values
+            acts as another origin which is taken refrence for any drawing of
+            shapes formerly the values of x and y are (0,0) 
+            </summary>
+            <param name="x">x co ordinate of origin</param>
+            <param name="y">y co ordinate of origin</param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.pentodraw(System.Int32,System.Int32)">
+            <summary>
+            method to draw a line from (positionXaxis,positionYaxis) to 
+            given points (a,b)
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.checkCommand(System.String)">
+            <summary>
+            takes every line of the command and checks for the shape names 
+            if it is in array shapes.
+            </summary>
+            <param name="line">line of command stored after each loop </param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.button2_Click(System.Object,System.EventArgs)">
+             <summary>
+            methods which becomes active as soon as Execute button is pressed. 
+             </summary>
+             <param name="sender"></param>
+             <param name="e"></param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.clear">
+            <summary>
+            this method is trigerred when clear button is clicked.
+            this clears text box as well as panel where drawing is 
+            drawn
+            </summary>
+        </member>
+        <member name="M:ASE_Component_I.Form1.reset">
+            <summary>
+            this button reset the point of reference or origin to (0,0)
+            </summary>
+        </member>
+        <member name="M:ASE_Component_I.Form1.rectangle_draw(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            the a and b is assigned as point of origin which is given (0,0)
+            at first which can replaced using moveto command. the c and d is 
+            given for the width and height of the rectangle. this method is to draw 
+            rectangle.
+            </summary>
+            <param name="a">x co ordinate of origin</param>
+            <param name="b">y co ordinate of origin</param>
+            <param name="c">width of the rectangle</param>
+            <param name="d">height of the rectangle</param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.circle_draw(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            the a and b is assigned as point of origin which is given (0,0)
+            at first which can replaced using moveto command. the c is given to
+            radius of circle.this is to draw circle
+            </summary>
+            <param name="a">x co ordinate of origin</param>
+            <param name="b">y co ordinate of origin</param>
+            <param name="c">radius of circle</param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.button1_Click(System.Object,System.EventArgs)">
+            <summary>
+            triggered when reset button is clicked
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.button3_Click(System.Object,System.EventArgs)">
+            <summary>
+            triggered when clear button is clicked
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.loadToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            method to load a file which is created and saved before.
+            </summary>
+            <param name="sender">where event came from</param>
+            <param name="e">what is in the event</param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.saveToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            to save the file written in coding text box to the given drive with
+            the given name
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.exitToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            trigerrred when exit button is clicked
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.aboutToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            trigerrred when about button is clicked
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:ASE_Component_I.Form1.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:ASE_Component_I.Form1.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:ASE_Component_I.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:ASE_Component_I.Rectangle">
+            <summary>
+            class to draw Rectangle
+            </summary>
+        </member>
+        <member name="M:ASE_Component_I.Rectangle.saved_values(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="a">origin x- coordinate</param>
+            <param name="b">origin y- corordinate</param>
+            <param name="c">width of the rectangle</param>
+            <param name="d">height of the rectangle</param>
+        </member>
+        <member name="M:ASE_Component_I.Rectangle.Draw_shape(System.Drawing.Graphics)">
+            <summary>
+            overriding
+            </summary>
+            <param name="g">object for graphics</param>
+        </member>
+        <member name="T:ASE_Component_I.Shape">
+            <summary>
+            parent class for all the shapes and drawing
+            </summary>
+        </member>
+        <member name="M:ASE_Component_I.Shape.Draw_shape(System.Drawing.Graphics)">
+            <summary>
+            method for overriding
+            </summary>
+            <param name="g">object for Graphics</param>
+        </member>
+        <member name="T:ASE_Component_I.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ASE_Component_I.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ASE_Component_I.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ASE_Component_I.Properties.Resources.icons8_exit_24">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ASE_Component_I.Properties.Resources.icons8_exit_241">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ASE_Component_I.Properties.Resources.icons8_exit_40">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ASE_Component_I.Properties.Resources.icons8_import_30">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ASE_Component_I.Properties.Resources.icons8_save_16">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ASE_Component_I.Properties.Resources.icons8_view_details_100">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ASE_Component_I.Properties.Resources.icons8_view_details_40">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+    </members>
+</doc>

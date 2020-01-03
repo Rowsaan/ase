@@ -7,3 +7,4 @@ C:\Users\Roshan\source\repos\ASE_Component I\ASE_Component I\obj\Debug\ASE_Compo
 C:\Users\Roshan\source\repos\ASE_Component I\ASE_Component I\obj\Debug\ASE_Component I.csproj.GenerateResource.cache
 C:\Users\Roshan\source\repos\ASE_Component I\ASE_Component I\obj\Debug\ASE_Component I.exe
 C:\Users\Roshan\source\repos\ASE_Component I\ASE_Component I\obj\Debug\ASE_Component I.pdb
+C:\Users\Roshan\source\repos\ASE_Component I\ASE_Component I\bin\Debug\Debug.xml
