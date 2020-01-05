@@ -21,13 +21,18 @@ namespace ASE_Component_I
 
         public int positionXaxis = 0;
         public int positionYaxis = 0;
+        int ifCounter = 0;
         string[] shapes = {"drawto", "moveto", "rectangle", "circle","triangle"};
+        string[] size = { "radius", "width", "height", "base", "adj", "hyp" };
+        string[] shapecommand = { "circle radius" };
         public bool draw = false;
         public bool load = false;
         public bool save = false;
         public bool execute = false;
         public bool clear_bool = false;
         public bool reset_bool = false;
+        public Dictionary<string, string> variableDictionary = new Dictionary<string, string>();
+      
         public Form1()
         {
             InitializeComponent();
@@ -80,10 +85,20 @@ namespace ASE_Component_I
             {
                 if (line.Contains(shapes[a]))
                 {
-                   
+                    return true;
+                }
+                else if (line.Contains(size[a]))
+                {
+                    return true;
+                }
+                else if (line.Contains(shapecommand[a]))
+                {
+
 
                     return true;
                 }
+                else
+                    return false;
             }
             return false;
         }
@@ -98,14 +113,28 @@ namespace ASE_Component_I
             execute = false;
             var multi_command = textBox2.Text;
             string[] multi_syntax = multi_command.Split('\n');
-            for(int i=0; i<multi_syntax.Length-1; i++)
+            int radius_me = 0;
+            for (int i=0; i<multi_syntax.Length-1; i++)
             {
+
+
                 String pte = multi_syntax[i].Trim();
                 string[] m_syntax = pte.Split('(');
+                string[] o_syntax = pte.Split('=');
                 
+
+                if(ifCounter != 0)
+                {
+                    continue;
+                }
+
+                if(pte == "endif")
+                {
+                    continue;
+                }
                 bool check = checkCommand(multi_syntax[i].ToLower());
-//check the line which contains error
-                if (!check)
+                //check the line which contains error
+                /*if (!check)
                 {
 
                     textBox1.Text = "Line: " + (i+1)+" Command Doesnot Exist";
@@ -113,11 +142,145 @@ namespace ASE_Component_I
                     break;
                    
                 }
+*/
+                //variable
+                if (pte.Contains('='))
+                {
+                    try
+                    {
+                        if (!(pte.StartsWith("if")) || !(pte.StartsWith("loop")) || !(pte.StartsWith("method")))
+                        {
+                            string[] variable = pte.Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+
+                            string key = variable[0].Trim();
+                            string value = variable[1].Trim();
+                            if (variableDictionary.ContainsKey(key))
+                            {
+                                variableDictionary[key] = value;
+                            }
+                            else
+                            {
+                                variableDictionary.Add(key, value);
+                            }
+                            continue;
+                        }
+
+                    }catch(Exception error)
+                    {
+                        textBox1.Text = "Variable error on line" + i+"/n" + error.Message;
+                        
+                        break;
+                    }
+                }
+
+
+               else if (pte.StartsWith("if"))
+                {
+                    try
+                    {
+
+                        bool endifcheck = false;
+                        string[] condition = pte.Split(new char[] { '=', '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
+                        string variableOperator = "";
+                        string[] variable = condition[0].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        string var = variable[1];
+                        int val = Int32.Parse(condition[1]);
+                        bool conditionStatus = false;
+                        if (pte.Contains("="))
+                        {
+                            variableOperator = "=";
+                        }
+                        else if (pte.Contains(">"))
+                        {
+                            variableOperator = ">";
+                        }
+                        else if (pte.Contains("<"))
+                        {
+                            variableOperator = "<";
+                        }
+
+
+                        for (int j = 0; j < multi_syntax.Length ; j++)
+                        { 
+                            if(pte == "endif")
+                            {
+                                endifcheck = true;
+                                break;
+                            }
+                        }
+
+                        if (endifcheck == false)
+                        {
+                            textBox1.Text = ("loop not closed on line " + i);
+                            panel1.Refresh();
+                            break;
+                        }
+
+                        for (int j = 0; j < multi_syntax.Length - 1; j++)
+                        {
+                            if (pte == "endif")
+                            {
+                                
+                                break;
+                            }
+                            else
+                            {
+                                ifCounter++;
+                            }
+                        }
+
+                        if (variableDictionary.ContainsKey(var))
+                        {
+
+                            int val2 = Int32.Parse(variableDictionary[var]);
+                            if(variableOperator == "=")
+                            {
+                                if (val2 == val)
+                                    conditionStatus = true;
+                            }
+                            else if (variableOperator == "<")
+                            {
+                                if (val2 < val)
+                                    conditionStatus = true;
+                            }
+                            else if (variableOperator == ">")
+                            {
+                                if (val2 > val)
+                                    conditionStatus = true;
+                            }
+
+
+                        }
+
+                        else
+                        {
+                            throw new Exception("Variable doesn't exist");
+                        }
+
+
+                        if (conditionStatus == true)
+                        {
+                            ifCounter = 0;
+                        }
+                        continue;
+                    }
+                    catch (Exception error)
+                    {
+                        textBox1.Text = error.Message + " on line " + i;
+                        break;
+                    }
+                    
+
+
+                }
+
 
 
                 try
                 {
-//executes if "moveto" command is triggered
+                    //executes if "moveto" command is triggered
+
                     if (string.Compare(m_syntax[0].ToLower(), "moveto") == 0)
                     {
                         String[] parameter1 = m_syntax[1].Split(',');
@@ -252,6 +415,12 @@ namespace ASE_Component_I
             execute = true;
 
         }
+
+        private void circle_draw(int positionXaxis, int positionYaxis, object radius)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// this method is trigerred when clear button is clicked.
         /// this clears text box as well as panel where drawing is 
