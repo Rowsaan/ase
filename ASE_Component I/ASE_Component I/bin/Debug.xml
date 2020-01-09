@@ -20,7 +20,7 @@
         <member name="T:ASE_Component_I.Form1">
             <summary>
             Form1 contains all the components like buttons
-            panel text field and all 
+            panel text field and all
             </summary>
         </member>
         <member name="M:ASE_Component_I.Form1.pentomove(System.Int32,System.Int32)">

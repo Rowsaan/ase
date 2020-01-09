@@ -14,25 +14,23 @@ namespace ASE_Component_I
 {
     /// <summary>
     /// Form1 contains all the components like buttons
-    /// panel text field and all 
+    /// panel text field and all
     /// </summary>
     public partial class Form1 : Form
     {
 
         public int positionXaxis = 0;
         public int positionYaxis = 0;
-        int ifCounter = 0;
         string[] shapes = {"drawto", "moveto", "rectangle", "circle","triangle"};
-        string[] size = { "radius", "width", "height", "base", "adj", "hyp" };
-        string[] shapecommand = { "circle radius" };
         public bool draw = false;
         public bool load = false;
         public bool save = false;
         public bool execute = false;
         public bool clear_bool = false;
         public bool reset_bool = false;
-        public Dictionary<string, string> variableDictionary = new Dictionary<string, string>();
-      
+        public int lineCount = 1;
+        public int IfCounter = 0;
+        public Dictionary<string, string> variableDict = new Dictionary<string, string>();
         public Form1()
         {
             InitializeComponent();
@@ -85,20 +83,10 @@ namespace ASE_Component_I
             {
                 if (line.Contains(shapes[a]))
                 {
-                    return true;
-                }
-                else if (line.Contains(size[a]))
-                {
-                    return true;
-                }
-                else if (line.Contains(shapecommand[a]))
-                {
-
+                   
 
                     return true;
                 }
-                else
-                    return false;
             }
             return false;
         }
@@ -110,317 +98,453 @@ namespace ASE_Component_I
         /// <param name="e"></param>
         public void button2_Click(object sender, EventArgs e)
         {
+            variableDict.Clear();
+            lineCount = 1;
+            textBox1.Refresh();
             execute = false;
             var multi_command = textBox2.Text;
-            string[] multi_syntax = multi_command.Split('\n');
-            int radius_me = 0;
-            for (int i=0; i<multi_syntax.Length-1; i++)
+            string[] multi_syntax = multi_command.Split(new char[] { '\n'}, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach(string l in multi_syntax) 
             {
 
 
-                String pte = multi_syntax[i].Trim();
-                string[] m_syntax = pte.Split('(');
-                string[] o_syntax = pte.Split('=');
-                
-
-                if(ifCounter != 0)
+                    bool result = caseRun(l);
+                if (!result)
                 {
-                    continue;
-                }
-
-                if(pte == "endif")
-                {
-                    continue;
-                }
-                bool check = checkCommand(multi_syntax[i].ToLower());
-                //check the line which contains error
-                /*if (!check)
-                {
-
-                    textBox1.Text = "Line: " + (i+1)+" Command Doesnot Exist";
-                    panel1.Refresh();
-                    break;
-                   
-                }
-*/
-                //variable
-                if (pte.Contains('='))
-                {
-                    try
-                    {
-                        if (!(pte.StartsWith("if")) || !(pte.StartsWith("loop")) || !(pte.StartsWith("method")))
-                        {
-                            string[] variable = pte.Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
-
-                            string key = variable[0].Trim();
-                            string value = variable[1].Trim();
-                            if (variableDictionary.ContainsKey(key))
-                            {
-                                variableDictionary[key] = value;
-                            }
-                            else
-                            {
-                                variableDictionary.Add(key, value);
-                            }
-                            continue;
-                        }
-
-                    }catch(Exception error)
-                    {
-                        textBox1.Text = "Variable error on line" + i+"/n" + error.Message;
-                        
-                        break;
-                    }
-                }
-
-
-               else if (pte.StartsWith("if"))
-                {
-                    try
-                    {
-
-                        bool endifcheck = false;
-                        string[] condition = pte.Split(new char[] { '=', '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
-                        string variableOperator = "";
-                        string[] variable = condition[0].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                        string var = variable[1];
-                        int val = Int32.Parse(condition[1]);
-                        bool conditionStatus = false;
-                        if (pte.Contains("="))
-                        {
-                            variableOperator = "=";
-                        }
-                        else if (pte.Contains(">"))
-                        {
-                            variableOperator = ">";
-                        }
-                        else if (pte.Contains("<"))
-                        {
-                            variableOperator = "<";
-                        }
-
-
-                        for (int j = 0; j < multi_syntax.Length ; j++)
-                        { 
-                            if(pte == "endif")
-                            {
-                                endifcheck = true;
-                                break;
-                            }
-                        }
-
-                        if (endifcheck == false)
-                        {
-                            textBox1.Text = ("loop not closed on line " + i);
-                            panel1.Refresh();
-                            break;
-                        }
-
-                        for (int j = 0; j < multi_syntax.Length - 1; j++)
-                        {
-                            if (pte == "endif")
-                            {
-                                
-                                break;
-                            }
-                            else
-                            {
-                                ifCounter++;
-                            }
-                        }
-
-                        if (variableDictionary.ContainsKey(var))
-                        {
-
-                            int val2 = Int32.Parse(variableDictionary[var]);
-                            if(variableOperator == "=")
-                            {
-                                if (val2 == val)
-                                    conditionStatus = true;
-                            }
-                            else if (variableOperator == "<")
-                            {
-                                if (val2 < val)
-                                    conditionStatus = true;
-                            }
-                            else if (variableOperator == ">")
-                            {
-                                if (val2 > val)
-                                    conditionStatus = true;
-                            }
-
-
-                        }
-
-                        else
-                        {
-                            throw new Exception("Variable doesn't exist");
-                        }
-
-
-                        if (conditionStatus == true)
-                        {
-                            ifCounter = 0;
-                        }
-                        continue;
-                    }
-                    catch (Exception error)
-                    {
-                        textBox1.Text = error.Message + " on line " + i;
-                        break;
-                    }
-                    
-
-
-                }
-
-
-
-                try
-                {
-                    //executes if "moveto" command is triggered
-
-                    if (string.Compare(m_syntax[0].ToLower(), "moveto") == 0)
-                    {
-                        String[] parameter1 = m_syntax[1].Split(',');
-                        if (parameter1.Length != 2)
-                            throw new Exception("MoveTo Takes Only 2 Parameters");
-                        else if (!parameter1[parameter1.Length - 1].Contains(')'))
-                            throw new Exception(" " + "Missing Paranthesis!!");
-                        else
-                        {
-                            String[] parameter2 = parameter1[1].Split(')');
-                            String p1 = parameter1[0];
-                            String p2 = parameter2[0];
-                            pentomove(int.Parse(p1), int.Parse(p2));
-                            if (parameter1.Length > 1 && parameter1.Length < 3)
-                                pentomove(int.Parse(p1), int.Parse(p2));
-                            else
-                                throw new ArgumentException("MoveTo takes Only 2 Parameters");
-
-                        }
-                    }
-                    else if (m_syntax[0].Equals("\n"))
-                    {
-
-                    }
-//executes if "drawto" command is triggered
-                    else if (string.Compare(m_syntax[0].ToLower(), "drawto") == 0)
-                    {
-
-                        String[] parameter1 = m_syntax[1].Split(',');
-                        if(parameter1.Length != 2)
-                            throw new Exception("DrawTo Takes Only 2 Parameters");
-                        else if (!parameter1[parameter1.Length-1].Contains(')'))
-                            throw new Exception(" " + "Missing Paranthesis!!");
-                        else
-                        {
-                            String[] parameter2 = parameter1[1].Split(')');
-                            String p1 = parameter1[0];
-                            String p2 = parameter2[0];
-                            pentodraw(int.Parse(p1), int.Parse(p2));
-                            if (parameter1.Length == 2)
-                                pentodraw(int.Parse(p1), int.Parse(p2));
-                            
-                            else
-                            {
-                                throw new ArgumentException("DrawTo Takes Only 2 Parameters");
-                            }
-                        }
-
-                    }
- //executes if "clear()" command is triggered
-                    else if (string.Compare(m_syntax[0].ToLower(), "clear") == 0)
-                    {
-                        clear();
-                    }
-//executes if "reset()" command is triggered
-                    else if (string.Compare(m_syntax[0].ToLower(), "reset") == 0)
-                    {
-                        reset();
-                    }
- //executes if "rectangle" command is triggered
-                    else if (string.Compare(m_syntax[0].ToLower(), "rectangle") == 0)
-                    {
-                        String[] parameter1 = m_syntax[1].Split(',');
-                        if (parameter1.Length != 2)
-                            throw new Exception("Rectangle Takes Only 2 Parameters");
-                        else if (!parameter1[parameter1.Length - 1].Contains(')'))
-                            throw new Exception(" " + "Missing Paranthesis!!");
-                        else
-                        {
-                            String[] parameter2 = parameter1[1].Split(')');
-                            String p1 = parameter1[0];
-                            String p2 = parameter2[0];
-                            if (parameter1.Length > 1 && parameter1.Length < 3)
-                                rectangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
-                            else
-                                throw new ArgumentException("Rectangle Takes Only 2 Parameters");
-                        }
-                    }
-//executes if "circle" command is triggered
-                    else if (string.Compare(m_syntax[0].ToLower(), "circle") == 0)
-                    {
-                        String test = m_syntax[1];
-                        String[] parameter2 = m_syntax[1].Split(')');
-                       if (!test.Contains(')'))
-                            throw new Exception(" " + "Missing Paranthesis!!");
-                        else
-                        {
-                            String p2 = parameter2[0];
-                            if (p2 != null || p2 != "" || p2 != " ")
-                                circle_draw(positionXaxis, positionYaxis, int.Parse(p2));
-                            else
-                                throw new ArgumentException("Circle Takes Only 1 Parameter");
-
-                        }
-                    }
-//executes if "triangle" command is triggered
-                    else if (string.Compare(m_syntax[0].ToLower(), "triangle") == 0)
-                    {
-                        String[] parameter1 = m_syntax[1].Split(',');
-                        if (parameter1.Length != 2)
-                            throw new Exception("Triangle Takes Only 2 Parameters");
-                        else if (!parameter1[parameter1.Length - 1].Contains(')'))
-                            throw new Exception(" " + "Missing Paranthesis!!");
-                        else
-                        {
-                        String[] parameter2 = parameter1[1].Split(')');
-                        String p1 = parameter1[0];
-                        String p2 = parameter2[0];
-                            if (parameter1.Length > 1 && parameter1.Length < 3)
-                                triangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
-                            else
-                                throw new ArgumentException("Triangle Takes Only 2 Parameters");
-                        }
-                    }
-                }
-                catch (ArgumentException ecp) {
-                    textBox1.Text ="Error in Line:" + (i+1)+" " + ecp.Message;
-                    panel1.Refresh();
-                }
-                
-                catch (Exception ee)  
-                {
-                    textBox1.Text = "Error in Line:" + (i+1)+ " " + "parameter Error!!"+ee.Message;
-                    panel1.Refresh();
+                    panel1.Invalidate();
                     break;
                 }
 
+
+                lineCount++;
 
             }
 
-            textBox1.Refresh();
-            execute = true;
+               
 
         }
 
-        private void circle_draw(int positionXaxis, int positionYaxis, object radius)
+            public bool caseRun(string line)
+            {
+                line = line.ToLower().Trim();
+
+
+
+            if (IfCounter != 0)
+            {
+                IfCounter--;
+                return true;
+
+            }
+            
+            else if (checkCommand(line))
+            {
+
+                string[] m_syntax = line.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
+                if (!runShape(m_syntax))
+                    return false;
+
+
+            }
+            else if(checkVariableDec(line)){
+                try
+                {
+                    string[] variableDeclration = line.Split(new char[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                    string key = variableDeclration[0];
+                    string value = variableDeclration[1];
+                   
+
+                    variableDict.Add(key,value);
+
+                 
+
+                }
+                catch (Exception e)
+                {
+                    textBox1.Text = "Line: " + lineCount + " Invalid Declration of variable";
+                    return false;
+                }
+
+
+            }else if (checkIfElse(line))
+            {
+                bool endIfCheck = false;
+                bool conditionStatus = false;
+                string conditionOperator = "";
+                try
+                {
+
+                    string[] IfCondtionParameter = getIfParameter(line);
+
+                    foreach(string c in IfCondtionParameter){
+                        Console.WriteLine(c);
+                    }
+
+
+                    if (!variableDict.ContainsKey(IfCondtionParameter[0].Trim().ToLower()))
+                    {
+                        textBox1.Text = "Line: " + lineCount + " Variable doesn't exist";
+                        return false;
+                    }
+
+
+                    string condValueString = IfCondtionParameter[1];
+                    int condValue = Int32.Parse(condValueString);
+
+
+
+
+                   string v = IfCondtionParameter[0].Trim().ToLower();
+                    string varValuestring = variableDict[v];
+                    int varvalue = Int32.Parse(varValuestring);
+
+                    if (line.Contains("="))
+                    {
+                        conditionOperator = "=";
+
+                    }else if (line.Contains("<"))
+                    {
+                        conditionOperator = "<";
+                    }
+                    else if (line.Contains(">"))
+                    {
+                        conditionOperator = ">";
+                    }
+
+
+                   
+
+
+                    var multi_command = textBox2.Text;
+                    string[] multi_syntax = multi_command.Split(new char[] { '\n' },StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (string l in multi_syntax)
+                    {
+
+                        if(l.ToLower().Trim() == "endif")
+                        {
+                            endIfCheck = true;
+                            break;
+                        }
+                       
+                    }
+                    if (!endIfCheck)
+                    {
+                        textBox1.Text = "Line: " + lineCount + " If EndIf statement not closed.";
+                        return false;
+                    }
+
+
+                    if(conditionOperator == "=")
+                    {
+                        if(varvalue == condValue)
+                        {
+                            conditionStatus = true;
+                        }
+                    }else if( conditionOperator == "<"){
+
+
+                        if(varvalue < condValue)
+                        {
+                            conditionStatus = true;
+                        }
+                    }else if (conditionOperator == ">")
+                    {
+                        if (varvalue > condValue)
+                        {
+                            conditionStatus = true;
+                        }
+                    }
+                    for (int i = lineCount; i < multi_syntax.Length; i++)
+                    {
+                        if(multi_syntax[i] == "endif")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            IfCounter++;
+                        }
+                    }
+
+                        if (conditionStatus)
+                    {
+                        IfCounter = 0;
+                    }
+
+                    }
+                catch (Exception e)
+                {
+                    textBox1.Text = "Line: " + lineCount + " Invalid if else statement" +"\n" + e.Message;
+                    return false;
+                }
+
+
+
+
+
+
+            }else if(line=="endif"){
+                return true;
+            }
+            else if(checkVariableOperation(line)){
+
+
+
+                //check variable operation
+                string[] varaible = line.Split(new char[] { '+','-' }, 2, StringSplitOptions.RemoveEmptyEntries);
+
+
+            }
+            else
+            {
+                textBox1.Text = "Line: " +lineCount+" Command doesn't Exist";
+                return false;
+            }
+
+
+                return true;
+            }
+
+
+        public string[] getIfParameter(string line)
         {
-            throw new NotImplementedException();
+
+            int start = line.IndexOf("(") + 1;
+            int end = line.IndexOf(")", start);
+
+            string result = line.Substring(start, end - start);
+            string[] parameterList = result.Split(new Char[] { '>','<','=' },2,StringSplitOptions.RemoveEmptyEntries);
+
+            return parameterList;
+
+
+        }
+        public bool checkVariableOperation(string line)
+        {
+            if (line.Contains("+") || line.Contains("-"))
+            {
+                return true;
+            }
+            return false;
         }
 
+        public string[] getParameter(string line)
+        {
+
+            int start = line.IndexOf("(") + 1;
+            int end = line.IndexOf(")", start);
+
+            string result = line.Substring(start, end - start);
+            string[] parameterList = result.Split(new Char[] { ','}, 2, StringSplitOptions.RemoveEmptyEntries);
+
+            return parameterList;
+
+
+        }
+
+        public bool checkIfElse(string line)
+        {
+            if (line.StartsWith("if"))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool checkVariableDec(string line)
+        {
+            if (line.Contains("=") && !line.StartsWith("if") && !line.StartsWith("method") && !line.StartsWith("loop"))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool withVariable(string[] lines)
+        {
+            string line = "(" + lines[1];
+            string[] parameters = getParameter(line);
+
+            foreach (string param in parameters)
+            {
+                Console.WriteLine(param);
+            }
+                bool variableCheck = false;
+
+            foreach(string param in parameters)
+            {
+                bool isNumeric = int.TryParse(param, out _);
+
+                if (!isNumeric)
+                {
+                    variableCheck = true;
+                    if (!variableDict.ContainsKey(param))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                       line= line.Replace(param, variableDict[param]);
+                    }
+                }
+            }
+
+
+
+            if (!variableCheck)
+                return false;
+
+            line = lines[0] + line;
+            Console.WriteLine(line);
+            caseRun(line);
+          
+
+            return true;
+        }
+        public bool runShape(string[] m_syntax)
+        {
+            if (withVariable(m_syntax))
+            {
+                return true;
+
+            }
+               
+
+            try
+            {
+                //executes if "moveto" command is triggered
+                if (string.Compare(m_syntax[0].ToLower(), "moveto") == 0)
+                {
+                    String[] parameter1 = m_syntax[1].Split(',');
+                    if (parameter1.Length != 2)
+                        throw new Exception("MoveTo Takes Only 2 Parameters");
+                    else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                        throw new Exception(" " + "Missing Paranthesis!!");
+                    else
+                    {
+                        String[] parameter2 = parameter1[1].Split(')');
+                        String p1 = parameter1[0];
+                        String p2 = parameter2[0];
+                        pentomove(int.Parse(p1), int.Parse(p2));
+                        if (parameter1.Length > 1 && parameter1.Length < 3)
+                            pentomove(int.Parse(p1), int.Parse(p2));
+                        else
+                            throw new ArgumentException("MoveTo takes Only 2 Parameters");
+
+                    }
+                }
+                else if (m_syntax[0].Equals("\n"))
+                {
+
+                }
+                //executes if "drawto" command is triggered
+                else if (string.Compare(m_syntax[0].ToLower(), "drawto") == 0)
+                {
+
+                    String[] parameter1 = m_syntax[1].Split(',');
+                    if (parameter1.Length != 2)
+                        throw new Exception("DrawTo Takes Only 2 Parameters");
+                    else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                        throw new Exception(" " + "Missing Paranthesis!!");
+                    else
+                    {
+                        String[] parameter2 = parameter1[1].Split(')');
+                        String p1 = parameter1[0];
+                        String p2 = parameter2[0];
+                        pentodraw(int.Parse(p1), int.Parse(p2));
+                        if (parameter1.Length == 2)
+                            pentodraw(int.Parse(p1), int.Parse(p2));
+
+                        else
+                        {
+                            throw new ArgumentException("DrawTo Takes Only 2 Parameters");
+                        }
+                    }
+
+                }
+                //executes if "clear()" command is triggered
+                else if (string.Compare(m_syntax[0].ToLower(), "clear") == 0)
+                {
+                    clear();
+                }
+                //executes if "reset()" command is triggered
+                else if (string.Compare(m_syntax[0].ToLower(), "reset") == 0)
+                {
+                    reset();
+                }
+                //executes if "rectangle" command is triggered
+                else if (string.Compare(m_syntax[0].ToLower(), "rectangle") == 0)
+                {
+                    String[] parameter1 = m_syntax[1].Split(',');
+                    if (parameter1.Length != 2)
+                        throw new Exception("Rectangle Takes Only 2 Parameters");
+                    else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                        throw new Exception(" " + "Missing Paranthesis!!");
+                    else
+                    {
+                        String[] parameter2 = parameter1[1].Split(')');
+                        String p1 = parameter1[0];
+                        String p2 = parameter2[0];
+                        if (parameter1.Length > 1 && parameter1.Length < 3)
+                            rectangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
+                        else
+                            throw new ArgumentException("Rectangle Takes Only 2 Parameters");
+                    }
+                }
+                //executes if "circle" command is triggered
+                else if (string.Compare(m_syntax[0].ToLower(), "circle") == 0)
+                {
+                    String test = m_syntax[1];
+                    String[] parameter2 = m_syntax[1].Split(')');
+                    if (!test.Contains(')'))
+                        throw new Exception(" " + "Missing Paranthesis!!");
+                    else
+                    {
+                        String p2 = parameter2[0];
+                        if (p2 != null || p2 != "" || p2 != " ")
+                            circle_draw(positionXaxis, positionYaxis, int.Parse(p2));
+                        else
+                            throw new ArgumentException("Circle Takes Only 1 Parameter");
+
+                    }
+                }
+                //executes if "triangle" command is triggered
+                else if (string.Compare(m_syntax[0].ToLower(), "triangle") == 0)
+                {
+                    String[] parameter1 = m_syntax[1].Split(',');
+                    if (parameter1.Length != 2)
+                        throw new Exception("Triangle Takes Only 2 Parameters");
+                    else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                        throw new Exception(" " + "Missing Paranthesis!!");
+                    else
+                    {
+                        String[] parameter2 = parameter1[1].Split(')');
+                        String p1 = parameter1[0];
+                        String p2 = parameter2[0];
+                        if (parameter1.Length > 1 && parameter1.Length < 3)
+                            triangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
+                        else
+                            throw new ArgumentException("Triangle Takes Only 2 Parameters");
+                    }
+                }
+                return true;
+            }
+            catch (ArgumentException ecp)
+            {
+                textBox1.Text = "Error in Line:" + (lineCount ) + " " + ecp.Message;
+                panel1.Refresh();
+                return false;
+            }
+
+            catch (Exception ee)
+            {
+                textBox1.Text = "Error in Line:" + (lineCount) + " " + "parameter Error!!" + ee.Message;
+                panel1.Refresh();
+                return false;
+            }
+           
+        }
         /// <summary>
         /// this method is trigerred when clear button is clicked.
         /// this clears text box as well as panel where drawing is 
@@ -431,9 +555,7 @@ namespace ASE_Component_I
             clear_bool = false;
             panel1.Refresh();
             textBox2.Clear();
-            textBox1.Clear();
             clear_bool = true;
-
         }
         /// <summary>
         /// this button reset the point of reference or origin to (0,0)
@@ -509,7 +631,6 @@ namespace ASE_Component_I
         private void button3_Click(object sender, EventArgs e)
         {
             clear();
-            
             
         }
 

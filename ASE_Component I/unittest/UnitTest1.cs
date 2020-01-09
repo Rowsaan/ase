@@ -13,7 +13,7 @@ namespace unittest
             var form = new Form1();
             var x = form.positionXaxis;
             var y = form.positionYaxis;
-            form.pentomove(0,2);
+            form.pentomove(10,20);
             bool eql = false;
             if (x != form.positionXaxis && y != form.positionYaxis)
                 eql = true;
