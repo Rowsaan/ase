@@ -29,6 +29,7 @@ namespace ASE_Component_I
         public bool clear_bool = false;
         public bool reset_bool = false;
         public int lineCount = 1;
+        public int lineNumberCount = 0;
         public int IfCounter = 0;
         public Dictionary<string, string> variableDict = new Dictionary<string, string>();
         public Form1()
@@ -100,7 +101,8 @@ namespace ASE_Component_I
         {
             variableDict.Clear();
             lineCount = 1;
-            textBox1.Refresh();
+            panel1.Refresh();
+            textBox1.Clear();
             execute = false;
             var multi_command = textBox2.Text;
             string[] multi_syntax = multi_command.Split(new char[] { '\n'}, StringSplitOptions.RemoveEmptyEntries);
@@ -137,7 +139,15 @@ namespace ASE_Component_I
                 return true;
 
             }
-            
+
+            if (lineNumberCount != 0)
+            {
+                
+                lineNumberCount--;
+
+                return true;
+            }
+
             else if (checkCommand(line))
             {
 
@@ -293,9 +303,169 @@ namespace ASE_Component_I
 
 
                 //check variable operation
-                string[] varaible = line.Split(new char[] { '+','-' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                string[] variable = line.Split(new char[] { '+','-' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                string variableOperator = "";
+
+                if (line.Contains("+"))
+                {
+                    variableOperator = "+";
+
+                }else
+                {
+                    variableOperator = "-";
+                }
+                string realKey = variable[0];
+                int realValue=Int32.Parse(variable[1]);
+                int dictValue = Int32.Parse(variableDict[realKey]);
+                if (!variableDict.ContainsKey(realKey))
+                {
+                    textBox1.Text = "Line: " + lineCount + " Variable doesn't Exist";
+                    return false;
+                }
 
 
+                if(variableOperator == "+")
+                {
+                    variableDict[realKey] = (dictValue + realValue).ToString();
+                }
+                else
+                {
+                    variableDict[realKey] = (dictValue - realValue).ToString();
+                }
+         
+            }
+            else if (checkLoop(line))
+            {
+
+                bool endloopCheck = false;
+                try
+                {
+                    string[] loop = line.Split(new string[] { "for" }, 2, StringSplitOptions.RemoveEmptyEntries);
+
+                    string loopCondition = loop[1].Trim();
+
+                    string[] loopVariable = loopCondition.Split(new string[] { "<=",">=" }, 2, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach(string l in loopVariable)
+                    {
+                        Console.WriteLine(l);
+                    }
+
+                    foreach(KeyValuePair<string,string> k in variableDict)
+                    {
+                        Console.WriteLine(k.Key +"=" +k.Value);
+                    }
+                    int loopValue = Int32.Parse(loopVariable[1].Trim()) ;
+                    string loopKey = loopVariable[0].Trim();
+                    Console.WriteLine(loopKey);
+                    if (!variableDict.ContainsKey(loopKey))
+                    {
+                        textBox1.Text = "Line: " + lineCount + " Variable doesn't exist 2";
+                        return false;
+                    }
+
+
+                    var multi_command = textBox2.Text;
+                    string[] multi_syntax = multi_command.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (string l in multi_syntax)
+                    {
+
+                        if (l.ToLower().Trim() == "endloop")
+                        {
+                            endloopCheck = true;
+                            break;
+                        }
+
+                    }
+                    if (!endloopCheck)
+                    {
+                        textBox1.Text = "Line: " + lineCount + " loop not closed.";
+                        return false;
+                    }
+
+
+                    //endloop check
+
+                   
+                    
+                    int counterLine = 0;
+                    int lineNumberCount1 = 0;
+
+                    List<string> loopList = new List<string>();
+                    for (int i = lineCount; i < multi_syntax.Length; i++)
+                    {
+                       
+                        if (multi_syntax[i] == "endloop")
+                        {
+
+                            break;
+                        }
+                        else
+                        {
+                            lineNumberCount1++;
+                            loopList.Add(multi_syntax[i]);
+                        }
+                    }
+
+
+
+                    int dictValue = 0;
+                    string loopOperator = "";
+                    counterLine = lineCount;
+
+                    if (line.Contains("<="))
+                    {
+                        loopOperator = "<=";
+                    }
+                    else
+                    {
+                        loopOperator = ">=";
+                    }
+
+
+                    if (loopOperator == "<=")
+                    {
+                        while (dictValue <= loopValue)
+                        {
+                            lineCount = counterLine;
+                            foreach (string list in loopList)
+                            {
+                                lineCount++;
+                                if (!caseRun(list))
+                                    return false;
+                            }
+                            dictValue = Int32.Parse(variableDict[loopKey]);
+                        }
+                    }
+                    else
+                    {
+
+                        while (dictValue >= loopValue)
+                        {
+                            lineCount = counterLine;
+                            foreach (string list in loopList)
+                            {
+                                lineCount++;
+                                if (!caseRun(list))
+                                    return false;
+                            }
+                            dictValue = Int32.Parse(variableDict[loopKey]);
+                        }
+                    }
+
+                    lineCount = counterLine;
+                    lineNumberCount = lineNumberCount1;
+                }
+                catch (Exception e)
+                {
+                    textBox1.Text = "Line: " + lineCount + " Invaild Loop Statement + \n " + e.Message;
+                    return false;
+                }
+
+            }
+            else if(line=="endloop"){
+                return true;
             }
             else
             {
@@ -307,7 +477,14 @@ namespace ASE_Component_I
                 return true;
             }
 
+        public bool checkLoop(string line)
+        {
+            if (line.StartsWith("loop"))
+                return true;
 
+            return false;
+
+        }
         public string[] getIfParameter(string line)
         {
 
