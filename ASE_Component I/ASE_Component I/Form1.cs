@@ -24,9 +24,18 @@ namespace ASE_Component_I
         string[] shapes = {"drawto", "moveto", "rectangle", "circle","triangle"};
         public bool draw = false;
         public bool load = false;
+        bool method = false;
         public bool save = false;
         public bool execute = false;
         public bool clear_bool = false;
+
+        List<String[]> n = new List<String[]>();
+        List<String> body = new List<string>();
+        List<String> b = new List<String>();
+        List<int> p = new List<int>();
+        List<String> pi = new List<String>();
+
+
         public bool reset_bool = false;
         public int lineCount = 1;
         public int lineNumberCount = 0;
@@ -52,6 +61,124 @@ namespace ASE_Component_I
 
 
 
+        }
+
+        public void shsh(String[] m_syntax)
+        {
+            if (string.Compare(m_syntax[0].ToLower(), "moveto") == 0)
+            {
+                String[] parameter1 = m_syntax[1].Split(',');
+                if (parameter1.Length != 2)
+                    throw new Exception("MoveTo Takes Only 2 Parameters");
+                else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                    throw new Exception(" " + "Missing Paranthesis!!");
+                else
+                {
+                    String[] parameter2 = parameter1[1].Split(')');
+                    String p1 = parameter1[0];
+                    String p2 = parameter2[0];
+                    pentomove(int.Parse(p1), int.Parse(p2));
+                    if (parameter1.Length > 1 && parameter1.Length < 3)
+                        pentomove(int.Parse(p1), int.Parse(p2));
+                    else
+                        throw new ArgumentException("MoveTo takes Only 2 Parameters");
+
+                }
+            }
+            else if (m_syntax[0].Equals("\n"))
+            {
+
+            }
+            //executes if "drawto" command is triggered
+            else if (string.Compare(m_syntax[0].ToLower(), "drawto") == 0)
+            {
+
+                String[] parameter1 = m_syntax[1].Split(',');
+                if (parameter1.Length != 2)
+                    throw new Exception("DrawTo Takes Only 2 Parameters");
+                else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                    throw new Exception(" " + "Missing Paranthesis!!");
+                else
+                {
+                    String[] parameter2 = parameter1[1].Split(')');
+                    String p1 = parameter1[0];
+                    String p2 = parameter2[0];
+                    pentodraw(int.Parse(p1), int.Parse(p2));
+                    if (parameter1.Length == 2)
+                        pentodraw(int.Parse(p1), int.Parse(p2));
+
+                    else
+                    {
+                        throw new ArgumentException("DrawTo Takes Only 2 Parameters");
+                    }
+                }
+
+            }
+            //executes if "clear()" command is triggered
+            else if (string.Compare(m_syntax[0].ToLower(), "clear") == 0)
+            {
+                clear();
+            }
+            //executes if "reset()" command is triggered
+            else if (string.Compare(m_syntax[0].ToLower(), "reset") == 0)
+            {
+                reset();
+            }
+            //executes if "rectangle" command is triggered
+            else if (string.Compare(m_syntax[0].ToLower(), "rectangle") == 0)
+            {
+                String[] parameter1 = m_syntax[1].Split(',');
+                if (parameter1.Length != 2)
+                    throw new Exception("Rectangle Takes Only 2 Parameters");
+                else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                    throw new Exception(" " + "Missing Paranthesis!!");
+                else
+                {
+                    String[] parameter2 = parameter1[1].Split(')');
+                    String p1 = parameter1[0];
+                    String p2 = parameter2[0];
+                    if (parameter1.Length > 1 && parameter1.Length < 3)
+                        rectangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
+                    else
+                        throw new ArgumentException("Rectangle Takes Only 2 Parameters");
+                }
+            }
+            //executes if "circle" command is triggered
+            else if (string.Compare(m_syntax[0].ToLower(), "circle") == 0)
+            {
+                String test = m_syntax[1];
+                String[] parameter2 = m_syntax[1].Split(')');
+                if (!test.Contains(')'))
+                    throw new Exception(" " + "Missing Paranthesis!!");
+                else
+                {
+                    String p2 = parameter2[0];
+                    if (p2 != null || p2 != "" || p2 != " ")
+                        circle_draw(positionXaxis, positionYaxis, int.Parse(p2));
+                    else
+                        throw new ArgumentException("Circle Takes Only 1 Parameter");
+
+                }
+            }
+            //executes if "triangle" command is triggered
+            else if (string.Compare(m_syntax[0].ToLower(), "triangle") == 0)
+            {
+                String[] parameter1 = m_syntax[1].Split(',');
+                if (parameter1.Length != 2)
+                    throw new Exception("Triangle Takes Only 2 Parameters");
+                else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                    throw new Exception(" " + "Missing Paranthesis!!");
+                else
+                {
+                    String[] parameter2 = parameter1[1].Split(')');
+                    String p1 = parameter1[0];
+                    String p2 = parameter2[0];
+                    if (parameter1.Length > 1 && parameter1.Length < 3)
+                        triangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
+                    else
+                        throw new ArgumentException("Triangle Takes Only 2 Parameters");
+                }
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -89,6 +216,10 @@ namespace ASE_Component_I
                     return true;
                 }
             }
+            String[] temp = line.Split('(');
+            if (b.Contains(temp[0])) {
+                return true;
+            }
             return false;
         }
 
@@ -100,6 +231,8 @@ namespace ASE_Component_I
         public void button2_Click(object sender, EventArgs e)
         {
             variableDict.Clear();
+            method = false;
+
             lineCount = 1;
             panel1.Refresh();
             textBox1.Clear();
@@ -152,7 +285,7 @@ namespace ASE_Component_I
             {
 
                 string[] m_syntax = line.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
-                if (!runShape(m_syntax))
+                if (!runShape(m_syntax, line))
                     return false;
 
 
@@ -466,6 +599,92 @@ namespace ASE_Component_I
             }
             else if(line=="endloop"){
                 return true;
+            }else if (checkMethod(line))
+            {
+                bool endMethodCheck = false;
+                var multi_command = textBox2.Text;
+                string[] multi_syntax = multi_command.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = lineCount; i < multi_syntax.Length; i++)
+                {
+
+                    if (multi_syntax[i] == "endmethod")
+                    {
+                        endMethodCheck = true;
+                        break;
+                    }
+                   
+                }
+
+                if (!endMethodCheck)
+                {
+                    textBox1.Text = "Line: " + lineCount + "Method not closed" ;
+                    return false;
+                }
+
+
+
+                    String[] area = multi_command.Split('\n');
+                    String te = "";
+                    String pe = "";
+
+                MessageBox.Show("Starting");
+                    for (int i = 0; i < area.Length; i++)
+                    {
+                        if (area[i].ToLower().Contains("method"))
+                        {
+                            MessageBox.Show("found");
+                            String[] t = area[i].Split(' ');
+                            String[] nn = t[t.Length - 1].Split('(');
+                            if (nn[nn.Length - 1].Contains(','))
+                            {
+                                String[] g = nn[nn.Length - 1].Split(',');
+                                p.Add(g.Length);
+                                for (int x = 0; x < g.Length; x++)
+                                {
+                                    if (x == g.Length - 1)
+                                    {
+                                        String[] tt = g[x].Split(')');
+                                        pe = pe + tt[0] + "\n";
+                                    }
+                                    else
+                                    {
+                                        pe = pe + g[x] + "\n";
+                                    }
+                                }
+                                pi.Add(pe);
+                            }
+                            else
+                            {
+                                String[] g = nn[nn.Length - 1].Split(')');
+                                if (g[0] == " " || g[0] == null || g[0] == "")
+                                {
+                                    p.Add(0);
+                                    pi.Add(" ");
+                                }
+                                else
+                                {
+                                    p.Add(1);
+                                    pe = pe + g[0] + "\n";
+                                    pi.Add(pe);
+                                }
+                            }
+                            b.Add(nn[0].ToLower());
+                            MessageBox.Show(nn[0].ToLower());
+                        }
+                        else
+                        {
+                            te = te + area[i] + "\n";
+                        }
+                    }
+                    MessageBox.Show("Body: "+te);
+                body.Add(te);
+                    n.Add(te.Split('\n'));
+                    method = true;
+
+
+            }else if (line == "endmethod")
+            {
+
             }
             else
             {
@@ -529,6 +748,14 @@ namespace ASE_Component_I
             }
             return false;
         }
+        public bool checkMethod(string line)
+        {
+            if (line.StartsWith("method"))
+            {
+                return true;
+            }
+            return false;
+        }
         public bool checkVariableDec(string line)
         {
             if (line.Contains("=") && !line.StartsWith("if") && !line.StartsWith("method") && !line.StartsWith("loop"))
@@ -579,133 +806,231 @@ namespace ASE_Component_I
 
             return true;
         }
-        public bool runShape(string[] m_syntax)
+        public bool runShape(string[] m_syntax, String line)
         {
-            if (withVariable(m_syntax))
+           
+            if (!method)
             {
-                return true;
+                if (withVariable(m_syntax))
+                {
+                    return true;
 
+                }
             }
-               
+
 
             try
             {
-                //executes if "moveto" command is triggered
-                if (string.Compare(m_syntax[0].ToLower(), "moveto") == 0)
+                
+                if (!method)
                 {
-                    String[] parameter1 = m_syntax[1].Split(',');
-                    if (parameter1.Length != 2)
-                        throw new Exception("MoveTo Takes Only 2 Parameters");
-                    else if (!parameter1[parameter1.Length - 1].Contains(')'))
-                        throw new Exception(" " + "Missing Paranthesis!!");
-                    else
+                    if (b.Contains(m_syntax[0].ToLower()))
                     {
-                        String[] parameter2 = parameter1[1].Split(')');
-                        String p1 = parameter1[0];
-                        String p2 = parameter2[0];
-                        pentomove(int.Parse(p1), int.Parse(p2));
-                        if (parameter1.Length > 1 && parameter1.Length < 3)
-                            pentomove(int.Parse(p1), int.Parse(p2));
-                        else
-                            throw new ArgumentException("MoveTo takes Only 2 Parameters");
+                        String cm = line;
+                        String cg = cm.Split('(')[0].Trim();
+                        if (b.Contains(cg.Trim()))
+                        {
+                            int count = 0;
+                            String[] l = cm.Split('(');
+                            List<int> ij = new List<int>();
+                            if (l[l.Length - 1].Contains(','))
+                            {
+                                String[] pp = l[l.Length - 1].Split(',');
+                                count = pp.Length;
+                                for (int q = 0; q < pp.Length; q++)
+                                {
+                                    if (q == pp.Length - 1)
+                                    {
+                                        ij.Add(int.Parse(pp[q]));
+                                    }
+                                    else
+                                    {
+                                        String[] ad = pp[q].Split(')');
+                                        if (ad[0] != "" && ad[0] != " " && ad[0] == null)
+                                            ij.Add(int.Parse(ad[0]));
+                                        else
+                                            ij.Add(0);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                String[] g = l[l.Length - 1].Split(')');
+                                if (g[0] == " " || g[0] == null || g[0] == "")
+                                {
+                                    count = 0;
+                                }
+                                else
+                                {
+                                    ij.Add(int.Parse(g[0]));
+                                    count = 1;
+                                }
+                            }
+                            if (count == p[b.IndexOf(cg.Trim())])
+                            {
+                                String[] zz = body[b.IndexOf(cg.Trim())].Split('\n');
+                                String za = pi[b.IndexOf(cg.Trim())];
 
-                    }
-                }
-                else if (m_syntax[0].Equals("\n"))
-                {
+                                for (int ss = 0; ss < zz.Length; ss++)
+                                {
+                                    if (!string.IsNullOrEmpty(zz[ss]))
+                                    {
+                                        MessageBox.Show(zz[ss]);
+                                        if (za == " ")
+                                        {
 
-                }
-                //executes if "drawto" command is triggered
-                else if (string.Compare(m_syntax[0].ToLower(), "drawto") == 0)
-                {
-
-                    String[] parameter1 = m_syntax[1].Split(',');
-                    if (parameter1.Length != 2)
-                        throw new Exception("DrawTo Takes Only 2 Parameters");
-                    else if (!parameter1[parameter1.Length - 1].Contains(')'))
-                        throw new Exception(" " + "Missing Paranthesis!!");
-                    else
-                    {
-                        String[] parameter2 = parameter1[1].Split(')');
-                        String p1 = parameter1[0];
-                        String p2 = parameter2[0];
-                        pentodraw(int.Parse(p1), int.Parse(p2));
-                        if (parameter1.Length == 2)
-                            pentodraw(int.Parse(p1), int.Parse(p2));
-
+                                        }
+                                        else
+                                        {
+                                            String[] io = za.Split('\n');
+                                            for (int ui = 0; ui < io.Length; ui++)
+                                            {
+                                                if (!string.IsNullOrEmpty(io[ui]))
+                                                {
+                                                    if (zz[ss].Contains(io[ui].Trim()))
+                                                    {
+                                                       
+                                                        zz[ss] = zz[ss].Replace(io[ui].Trim(), ij[ui].ToString());
+                                                        MessageBox.Show(zz[ss]);
+                                                        caseRun(zz[ss]);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Parameter Doesn't Match");
+                            }
+                        }
                         else
                         {
-                            throw new ArgumentException("DrawTo Takes Only 2 Parameters");
+                            MessageBox.Show("Not Found");
                         }
                     }
+                    //executes if "moveto" command is triggered
+                    else if (string.Compare(m_syntax[0].ToLower(), "moveto") == 0)
+                    {
+                        String[] parameter1 = m_syntax[1].Split(',');
+                        if (parameter1.Length != 2)
+                            throw new Exception("MoveTo Takes Only 2 Parameters");
+                        else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                            throw new Exception(" " + "Missing Paranthesis!!");
+                        else
+                        {
+                            String[] parameter2 = parameter1[1].Split(')');
+                            String p1 = parameter1[0];
+                            String p2 = parameter2[0];
+                            pentomove(int.Parse(p1), int.Parse(p2));
+                            if (parameter1.Length > 1 && parameter1.Length < 3)
+                                pentomove(int.Parse(p1), int.Parse(p2));
+                            else
+                                throw new ArgumentException("MoveTo takes Only 2 Parameters");
 
-                }
-                //executes if "clear()" command is triggered
-                else if (string.Compare(m_syntax[0].ToLower(), "clear") == 0)
-                {
-                    clear();
-                }
-                //executes if "reset()" command is triggered
-                else if (string.Compare(m_syntax[0].ToLower(), "reset") == 0)
-                {
-                    reset();
-                }
-                //executes if "rectangle" command is triggered
-                else if (string.Compare(m_syntax[0].ToLower(), "rectangle") == 0)
-                {
-                    String[] parameter1 = m_syntax[1].Split(',');
-                    if (parameter1.Length != 2)
-                        throw new Exception("Rectangle Takes Only 2 Parameters");
-                    else if (!parameter1[parameter1.Length - 1].Contains(')'))
-                        throw new Exception(" " + "Missing Paranthesis!!");
-                    else
-                    {
-                        String[] parameter2 = parameter1[1].Split(')');
-                        String p1 = parameter1[0];
-                        String p2 = parameter2[0];
-                        if (parameter1.Length > 1 && parameter1.Length < 3)
-                            rectangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
-                        else
-                            throw new ArgumentException("Rectangle Takes Only 2 Parameters");
+                        }
                     }
-                }
-                //executes if "circle" command is triggered
-                else if (string.Compare(m_syntax[0].ToLower(), "circle") == 0)
-                {
-                    String test = m_syntax[1];
-                    String[] parameter2 = m_syntax[1].Split(')');
-                    if (!test.Contains(')'))
-                        throw new Exception(" " + "Missing Paranthesis!!");
-                    else
+                    else if (m_syntax[0].Equals("\n"))
                     {
-                        String p2 = parameter2[0];
-                        if (p2 != null || p2 != "" || p2 != " ")
-                            circle_draw(positionXaxis, positionYaxis, int.Parse(p2));
-                        else
-                            throw new ArgumentException("Circle Takes Only 1 Parameter");
 
                     }
-                }
-                //executes if "triangle" command is triggered
-                else if (string.Compare(m_syntax[0].ToLower(), "triangle") == 0)
-                {
-                    String[] parameter1 = m_syntax[1].Split(',');
-                    if (parameter1.Length != 2)
-                        throw new Exception("Triangle Takes Only 2 Parameters");
-                    else if (!parameter1[parameter1.Length - 1].Contains(')'))
-                        throw new Exception(" " + "Missing Paranthesis!!");
-                    else
+                    //executes if "drawto" command is triggered
+                    else if (string.Compare(m_syntax[0].ToLower(), "drawto") == 0)
                     {
-                        String[] parameter2 = parameter1[1].Split(')');
-                        String p1 = parameter1[0];
-                        String p2 = parameter2[0];
-                        if (parameter1.Length > 1 && parameter1.Length < 3)
-                            triangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
+
+                        String[] parameter1 = m_syntax[1].Split(',');
+                        if (parameter1.Length != 2)
+                            throw new Exception("DrawTo Takes Only 2 Parameters");
+                        else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                            throw new Exception(" " + "Missing Paranthesis!!");
                         else
-                            throw new ArgumentException("Triangle Takes Only 2 Parameters");
+                        {
+                            String[] parameter2 = parameter1[1].Split(')');
+                            String p1 = parameter1[0];
+                            String p2 = parameter2[0];
+                            pentodraw(int.Parse(p1), int.Parse(p2));
+                            if (parameter1.Length == 2)
+                                pentodraw(int.Parse(p1), int.Parse(p2));
+
+                            else
+                            {
+                                throw new ArgumentException("DrawTo Takes Only 2 Parameters");
+                            }
+                        }
+
                     }
+                    //executes if "clear()" command is triggered
+                    else if (string.Compare(m_syntax[0].ToLower(), "clear") == 0)
+                    {
+                        clear();
+                    }
+                    //executes if "reset()" command is triggered
+                    else if (string.Compare(m_syntax[0].ToLower(), "reset") == 0)
+                    {
+                        reset();
+                    }
+                    //executes if "rectangle" command is triggered
+                    else if (string.Compare(m_syntax[0].ToLower(), "rectangle") == 0)
+                    {
+                        String[] parameter1 = m_syntax[1].Split(',');
+                        if (parameter1.Length != 2)
+                            throw new Exception("Rectangle Takes Only 2 Parameters");
+                        else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                            throw new Exception(" " + "Missing Paranthesis!!");
+                        else
+                        {
+                            String[] parameter2 = parameter1[1].Split(')');
+                            String p1 = parameter1[0];
+                            String p2 = parameter2[0];
+                            if (parameter1.Length > 1 && parameter1.Length < 3)
+                                rectangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
+                            else
+                                throw new ArgumentException("Rectangle Takes Only 2 Parameters");
+                        }
+                    }
+                    //executes if "circle" command is triggered
+                    else if (string.Compare(m_syntax[0].ToLower(), "circle") == 0)
+                    {
+                        String test = m_syntax[1];
+                        String[] parameter2 = m_syntax[1].Split(')');
+                        if (!test.Contains(')'))
+                            throw new Exception(" " + "Missing Paranthesis!!");
+                        else
+                        {
+                            String p2 = parameter2[0];
+                            if (p2 != null || p2 != "" || p2 != " ")
+                                circle_draw(positionXaxis, positionYaxis, int.Parse(p2));
+                            else
+                                throw new ArgumentException("Circle Takes Only 1 Parameter");
+
+                        }
+                    }
+                    //executes if "triangle" command is triggered
+                    else if (string.Compare(m_syntax[0].ToLower(), "triangle") == 0)
+                    {
+                        String[] parameter1 = m_syntax[1].Split(',');
+                        if (parameter1.Length != 2)
+                            throw new Exception("Triangle Takes Only 2 Parameters");
+                        else if (!parameter1[parameter1.Length - 1].Contains(')'))
+                            throw new Exception(" " + "Missing Paranthesis!!");
+                        else
+                        {
+                            String[] parameter2 = parameter1[1].Split(')');
+                            String p1 = parameter1[0];
+                            String p2 = parameter2[0];
+                            if (parameter1.Length > 1 && parameter1.Length < 3)
+                                triangle_draw(positionXaxis, positionYaxis, int.Parse(p1), int.Parse(p2));
+                            else
+                                throw new ArgumentException("Triangle Takes Only 2 Parameters");
+                        }
+                    }
+                    return true;
                 }
-                return true;
+                else
+                {
+                    return true;
+                }
             }
             catch (ArgumentException ecp)
             {
