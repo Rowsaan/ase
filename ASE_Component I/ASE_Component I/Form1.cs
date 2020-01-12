@@ -627,12 +627,10 @@ namespace ASE_Component_I
                     String te = "";
                     String pe = "";
 
-                MessageBox.Show("Starting");
                     for (int i = 0; i < area.Length; i++)
                     {
                         if (area[i].ToLower().Contains("method"))
                         {
-                            MessageBox.Show("found");
                             String[] t = area[i].Split(' ');
                             String[] nn = t[t.Length - 1].Split('(');
                             if (nn[nn.Length - 1].Contains(','))
@@ -669,14 +667,14 @@ namespace ASE_Component_I
                                 }
                             }
                             b.Add(nn[0].ToLower());
-                            MessageBox.Show(nn[0].ToLower());
+                            
                         }
                         else
                         {
                             te = te + area[i] + "\n";
                         }
                     }
-                    MessageBox.Show("Body: "+te);
+                textBox1.Text = "Method Created Sucessfully!!";
                 body.Add(te);
                     n.Add(te.Split('\n'));
                     method = true;
@@ -839,7 +837,7 @@ namespace ASE_Component_I
                                 count = pp.Length;
                                 for (int q = 0; q < pp.Length; q++)
                                 {
-                                    if (q == pp.Length - 1)
+                                    if (q != pp.Length - 1)
                                     {
                                         ij.Add(int.Parse(pp[q]));
                                     }
@@ -849,9 +847,10 @@ namespace ASE_Component_I
                                         if (ad[0] != "" && ad[0] != " " && ad[0] == null)
                                             ij.Add(int.Parse(ad[0]));
                                         else
-                                            ij.Add(0);
+                                            ij.Add(int.Parse(ad[0]));
                                     }
                                 }
+
                             }
                             else
                             {
@@ -875,10 +874,9 @@ namespace ASE_Component_I
                                 {
                                     if (!string.IsNullOrEmpty(zz[ss]))
                                     {
-                                        MessageBox.Show(zz[ss]);
                                         if (za == " ")
                                         {
-
+                                            caseRun(zz[ss]);
                                         }
                                         else
                                         {
@@ -889,25 +887,27 @@ namespace ASE_Component_I
                                                 {
                                                     if (zz[ss].Contains(io[ui].Trim()))
                                                     {
-                                                       
                                                         zz[ss] = zz[ss].Replace(io[ui].Trim(), ij[ui].ToString());
-                                                        MessageBox.Show(zz[ss]);
-                                                        caseRun(zz[ss]);
+                                                       
                                                     }
                                                 }
+                                                else {
+                                                    caseRun(zz[ss]);
+                                                }
                                             }
+                                            caseRun(zz[ss]);
                                         }
                                     }
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("Parameter Doesn't Match");
+                                textBox1.Text="Parameter Doesn't Match in method!!";
                             }
                         }
                         else
                         {
-                            MessageBox.Show("Not Found");
+                            textBox1.Text = "Method Error!!";
                         }
                     }
                     //executes if "moveto" command is triggered
