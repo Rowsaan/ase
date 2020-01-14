@@ -26,7 +26,7 @@ namespace ASE_Component_I
         /// variable created for y co-ordinate of origin
         /// </summary>
         public int positionYaxis = 0;
-        string[] shapes = {"drawto", "moveto", "rectangle", "circle","triangle"};
+        string[] shapes = {"drawto", "moveto", "rectangle", "circle","triangle", "rotate" };
         /// <summary>
         /// checks whether drawto is executed for unit testing.
         /// </summary>
@@ -40,6 +40,7 @@ namespace ASE_Component_I
         /// checks whether save is executed for unit testing.
         /// </summary>
         public bool save = false;
+        public float rotation = 0;
         /// <summary>
         /// checks whether execute is executed for unit testing.
         /// </summary>
@@ -1081,6 +1082,24 @@ namespace ASE_Component_I
                                 throw new ArgumentException("Rectangle Takes Only 2 Parameters");
                         }
                     }
+
+                    else if (string.Compare(m_syntax[0].ToLower(), "rotate") == 0)
+                    {
+                        String test = m_syntax[1];
+                        String[] parameter2 = m_syntax[1].Split(')');
+                        if (!test.Contains(')'))
+                            throw new Exception(" " + "Missing Paranthesis!!");
+                        else
+                        {
+                            String p2 = parameter2[0];
+                            if (p2 != null || p2 != "" || p2 != " ")
+                                rotate(float.Parse(p2));
+                            else
+                                throw new ArgumentException("Rotate Takes Only 1 Parameter");
+
+                        }
+                    }
+
                     //executes if "circle" command is triggered
                     else if (string.Compare(m_syntax[0].ToLower(), "circle") == 0)
                     {
@@ -1159,6 +1178,7 @@ namespace ASE_Component_I
             reset_bool = false;
             positionXaxis = 0;
             positionYaxis = 0;
+            rotation = 0;
             reset_bool = true;
         }
         /// <summary>
@@ -1177,6 +1197,7 @@ namespace ASE_Component_I
             Rectangle mewmew = new Rectangle();
             mewmew.saved_values(a, b, c, d);
             Graphics g = panel1.CreateGraphics();
+            g.RotateTransform(rotation);
             mewmew.Draw_shape(g);
             draw = true;
         }
@@ -1194,7 +1215,15 @@ namespace ASE_Component_I
             Circle mewmew2 = new Circle();
             mewmew2.saved_values(a, b, c);
             Graphics g = panel1.CreateGraphics();
+            g.RotateTransform(rotation);
             mewmew2.Draw_shape(g);
+            draw = true;
+        }
+
+        public void rotate(float a)
+        {
+            draw = false;
+            rotation = a;
             draw = true;
         }
         /// <summary>
@@ -1212,6 +1241,7 @@ namespace ASE_Component_I
             Triangle mewmew4 = new Triangle();
             mewmew4.saved_values(a, b, c, d);
             Graphics g = panel1.CreateGraphics();
+            g.RotateTransform(rotation);
             mewmew4.Draw_shape(g);
             draw = true;
         }
