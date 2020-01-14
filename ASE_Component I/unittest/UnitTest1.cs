@@ -58,16 +58,6 @@ namespace unittest
             form.triangle_draw(0,0,23,34);
             Assert.IsTrue(form.draw);
         }
-        [TestMethod]
-        public void Execute()
-        {
-            var form = new Form1();
-            object a = new object();
-            EventArgs b = new EventArgs();
-            form.button2_Click(a, b);
-            Assert.IsTrue(form.execute);
-
-        }
 
         [TestMethod]
         public void Reset()

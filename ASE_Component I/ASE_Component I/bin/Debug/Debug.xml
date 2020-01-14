@@ -23,6 +23,71 @@
             panel text field and all
             </summary>
         </member>
+        <member name="F:ASE_Component_I.Form1.positionXaxis">
+            <summary>
+            variable created for x co-ordinate of origin
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.positionYaxis">
+            <summary>
+            variable created for y co-ordinate of origin
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.draw">
+            <summary>
+            checks whether drawto is executed for unit testing.
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.load">
+            <summary>
+            checks whether load is executed for unit testing.
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.save">
+            <summary>
+            checks whether save is executed for unit testing.
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.execute">
+            <summary>
+            checks whether execute is executed for unit testing.
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.clear_bool">
+            <summary>
+            checks whether clear is executed for unit testing.
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.reset_bool">
+            <summary>
+            checks whether reset button is executed for unit testing
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.lineCount">
+            <summary>
+            counts the number of line written in textbox seperated by "\n".
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.lineNumberCount">
+            <summary>
+            counts the number of line inside loop for.
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.IfCounter">
+            <summary>
+            counts the number of statements inside if statement.
+            </summary>
+        </member>
+        <member name="F:ASE_Component_I.Form1.variableDict">
+            <summary>
+            dictionary for variable created by user.
+            </summary>
+        </member>
+        <member name="M:ASE_Component_I.Form1.#ctor">
+            <summary>
+            includes entire methods and fuctions of the program
+            </summary>
+        </member>
         <member name="M:ASE_Component_I.Form1.pentomove(System.Int32,System.Int32)">
             <summary>
             this methods takes two parameters x and y which when given values
@@ -31,6 +96,12 @@
             </summary>
             <param name="x">x co ordinate of origin</param>
             <param name="y">y co ordinate of origin</param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.shsh(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="m_syntax"></param>
         </member>
         <member name="M:ASE_Component_I.Form1.pentodraw(System.Int32,System.Int32)">
             <summary>
@@ -54,6 +125,79 @@
              </summary>
              <param name="sender"></param>
              <param name="e"></param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.caseRun(System.String)">
+            <summary>
+            checks whether the code is if statement loop or method incase it is any of those
+            caserun function is executed
+            </summary>
+            <param name="line"> single line of code seperated by enter</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.checkLoop(System.String)">
+            <summary>
+            checks whether the written code is loop or any other commands
+            </summary>
+            <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.getIfParameter(System.String)">
+            <summary>
+            breaks the conditions like if "radius less than 10" the parameter list takes radius and 10-
+            </summary>
+            <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.checkVariableOperation(System.String)">
+            <summary>
+            checks whether the line contains + or - for the incerement or decrement
+            </summary>
+            <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.getParameter(System.String)">
+            <summary>
+            stores valiue between paranthesis in a array named parameterList seperated by comma.
+            </summary>
+            <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.checkIfElse(System.String)">
+            <summary>
+            checks whether the line starts with 'if' 
+            </summary>
+            <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.checkMethod(System.String)">
+            <summary>
+            checks whether the line starts with 'method'
+            </summary>
+            <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.checkVariableDec(System.String)">
+            <summary>
+            checks whether the line contains equals to sign for variable declaration.
+            </summary>
+            <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.withVariable(System.String[])">
+            <summary>
+            checks if the shape command contains any variable, whether the variable written is stored in dictionary and
+            replace it value instead of key.
+            </summary>
+            <param name="lines">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+            <returns></returns>
+        </member>
+        <member name="M:ASE_Component_I.Form1.runShape(System.String[],System.String)">
+            <summary>
+            execution for creating of method and call of method
+            </summary>
+            <param name="m_syntax"> array for first word of the line</param>
+            <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+            <returns></returns>
         </member>
         <member name="M:ASE_Component_I.Form1.clear">
             <summary>
@@ -88,6 +232,17 @@
             <param name="a">x co ordinate of origin</param>
             <param name="b">y co ordinate of origin</param>
             <param name="c">radius of circle</param>
+        </member>
+        <member name="M:ASE_Component_I.Form1.triangle_draw(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            the a and b is assigned as point of origin which is given (0,0)
+            at first which can replaced using moveto command. the c and d are the base and 
+            perpendicular of right angled triangle.
+            </summary>
+            <param name="a">x co ordinate of origin</param>
+            <param name="b">y co ordinate of origin</param>
+            <param name="c">base of the triangle</param>
+            <param name="d">perpendicular of the triangle</param>
         </member>
         <member name="M:ASE_Component_I.Form1.button1_Click(System.Object,System.EventArgs)">
             <summary>

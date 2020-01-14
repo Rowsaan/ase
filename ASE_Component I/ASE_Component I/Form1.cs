@@ -18,15 +18,35 @@ namespace ASE_Component_I
     /// </summary>
     public partial class Form1 : Form
     {
-
+        /// <summary>
+        /// variable created for x co-ordinate of origin
+        /// </summary>
         public int positionXaxis = 0;
+        /// <summary>
+        /// variable created for y co-ordinate of origin
+        /// </summary>
         public int positionYaxis = 0;
         string[] shapes = {"drawto", "moveto", "rectangle", "circle","triangle"};
+        /// <summary>
+        /// checks whether drawto is executed for unit testing.
+        /// </summary>
         public bool draw = false;
+        /// <summary>
+        /// checks whether load is executed for unit testing.
+        /// </summary>
         public bool load = false;
         bool method = false;
+        /// <summary>
+        /// checks whether save is executed for unit testing.
+        /// </summary>
         public bool save = false;
+        /// <summary>
+        /// checks whether execute is executed for unit testing.
+        /// </summary>
         public bool execute = false;
+        /// <summary>
+        /// checks whether clear is executed for unit testing.
+        /// </summary>
         public bool clear_bool = false;
 
         List<String[]> n = new List<String[]>();
@@ -35,12 +55,29 @@ namespace ASE_Component_I
         List<int> p = new List<int>();
         List<String> pi = new List<String>();
 
-
+        /// <summary>
+        /// checks whether reset button is executed for unit testing
+        /// </summary>
         public bool reset_bool = false;
+        /// <summary>
+        /// counts the number of line written in textbox seperated by "\n".
+        /// </summary>
         public int lineCount = 1;
+        /// <summary>
+        /// counts the number of line inside loop for.
+        /// </summary>
         public int lineNumberCount = 0;
+        /// <summary>
+        /// counts the number of statements inside if statement.
+        /// </summary>
         public int IfCounter = 0;
+        /// <summary>
+        /// dictionary for variable created by user.
+        /// </summary>
         public Dictionary<string, string> variableDict = new Dictionary<string, string>();
+        /// <summary>
+        /// includes entire methods and fuctions of the program
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
@@ -63,6 +100,10 @@ namespace ASE_Component_I
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="m_syntax"></param>
         public void shsh(String[] m_syntax)
         {
             if (string.Compare(m_syntax[0].ToLower(), "moveto") == 0)
@@ -222,7 +263,6 @@ namespace ASE_Component_I
             }
             return false;
         }
-
         /// <summary>
         ///methods which becomes active as soon as Execute button is pressed. 
         /// </summary>
@@ -259,19 +299,25 @@ namespace ASE_Component_I
                
 
         }
-
+        /// <summary>
+        /// checks whether the code is if statement loop or method incase it is any of those
+        /// caserun function is executed
+        /// </summary>
+        /// <param name="line"> single line of code seperated by enter</param>
+        /// <returns></returns>
             public bool caseRun(string line)
             {
                 line = line.ToLower().Trim();
 
 
-
+            /* breaks the statement if the retun value is false*/       
             if (IfCounter != 0)
             {
                 IfCounter--;
                 return true;
 
             }
+            /* breaks the statement if the retun value is false*/
 
             if (lineNumberCount != 0)
             {
@@ -280,7 +326,7 @@ namespace ASE_Component_I
 
                 return true;
             }
-
+            /* checks whether the line m_syntax contains any type of the shape*/
             else if (checkCommand(line))
             {
 
@@ -290,6 +336,7 @@ namespace ASE_Component_I
 
 
             }
+            /* checks the declaration of variable*/
             else if(checkVariableDec(line)){
                 try
                 {
@@ -303,6 +350,7 @@ namespace ASE_Component_I
                  
 
                 }
+                /// object created for the exception error
                 catch (Exception e)
                 {
                     textBox1.Text = "Line: " + lineCount + " Invalid Declration of variable";
@@ -494,7 +542,7 @@ namespace ASE_Component_I
                     Console.WriteLine(loopKey);
                     if (!variableDict.ContainsKey(loopKey))
                     {
-                        textBox1.Text = "Line: " + lineCount + " Variable doesn't exist 2";
+                        textBox1.Text = "Line: " + lineCount + " Variable doesn't exist ";
                         return false;
                     }
 
@@ -694,7 +742,11 @@ namespace ASE_Component_I
 
                 return true;
             }
-
+        /// <summary>
+        /// checks whether the written code is loop or any other commands
+        /// </summary>
+        /// <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+        /// <returns></returns>
         public bool checkLoop(string line)
         {
             if (line.StartsWith("loop"))
@@ -703,6 +755,11 @@ namespace ASE_Component_I
             return false;
 
         }
+        /// <summary>
+        /// breaks the conditions like if "radius less than 10" the parameter list takes radius and 10-
+        /// </summary>
+        /// <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+        /// <returns></returns>
         public string[] getIfParameter(string line)
         {
 
@@ -716,6 +773,11 @@ namespace ASE_Component_I
 
 
         }
+        /// <summary>
+        /// checks whether the line contains + or - for the incerement or decrement
+        /// </summary>
+        /// <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+        /// <returns></returns>
         public bool checkVariableOperation(string line)
         {
             if (line.Contains("+") || line.Contains("-"))
@@ -724,7 +786,11 @@ namespace ASE_Component_I
             }
             return false;
         }
-
+        /// <summary>
+        /// stores valiue between paranthesis in a array named parameterList seperated by comma.
+        /// </summary>
+        /// <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+        /// <returns></returns>
         public string[] getParameter(string line)
         {
 
@@ -732,13 +798,17 @@ namespace ASE_Component_I
             int end = line.IndexOf(")", start);
 
             string result = line.Substring(start, end - start);
-            string[] parameterList = result.Split(new Char[] { ','}, 2, StringSplitOptions.RemoveEmptyEntries);
+            string[] parameterList = result.Split(new Char[] { ','}, StringSplitOptions.RemoveEmptyEntries);
 
             return parameterList;
 
 
         }
-
+        /// <summary>
+        /// checks whether the line starts with 'if' 
+        /// </summary>
+        /// <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+        /// <returns></returns>
         public bool checkIfElse(string line)
         {
             if (line.StartsWith("if"))
@@ -747,6 +817,11 @@ namespace ASE_Component_I
             }
             return false;
         }
+        /// <summary>
+        /// checks whether the line starts with 'method'
+        /// </summary>
+        /// <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+        /// <returns></returns>
         public bool checkMethod(string line)
         {
             if (line.StartsWith("method"))
@@ -755,6 +830,11 @@ namespace ASE_Component_I
             }
             return false;
         }
+        /// <summary>
+        /// checks whether the line contains equals to sign for variable declaration.
+        /// </summary>
+        /// <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+        /// <returns></returns>
         public bool checkVariableDec(string line)
         {
             if (line.Contains("=") && !line.StartsWith("if") && !line.StartsWith("method") && !line.StartsWith("loop"))
@@ -763,7 +843,12 @@ namespace ASE_Component_I
             }
             return false;
         }
-
+        /// <summary>
+        /// checks if the shape command contains any variable, whether the variable written is stored in dictionary and
+        /// replace it value instead of key.
+        /// </summary>
+        /// <param name="lines">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+        /// <returns></returns>
         public bool withVariable(string[] lines)
         {
             string line = "(" + lines[1];
@@ -805,6 +890,12 @@ namespace ASE_Component_I
 
             return true;
         }
+        /// <summary>
+        /// execution for creating of method and call of method
+        /// </summary>
+        /// <param name="m_syntax"> array for first word of the line</param>
+        /// <param name="line">entire line which is seperated as soon as enter is pressed which is "\n"</param>
+        /// <returns></returns>
         public bool runShape(string[] m_syntax, String line)
         {
            
@@ -1106,7 +1197,15 @@ namespace ASE_Component_I
             mewmew2.Draw_shape(g);
             draw = true;
         }
-        
+        /// <summary>
+        /// the a and b is assigned as point of origin which is given (0,0)
+        /// at first which can replaced using moveto command. the c and d are the base and 
+        /// perpendicular of right angled triangle.
+        /// </summary>
+        /// <param name="a">x co ordinate of origin</param>
+        /// <param name="b">y co ordinate of origin</param>
+        /// <param name="c">base of the triangle</param>
+        /// <param name="d">perpendicular of the triangle</param>
         public void triangle_draw(int a, int b, int c, int d)
         {
             draw = false;
